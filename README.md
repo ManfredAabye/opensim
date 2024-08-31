@@ -1,3 +1,6 @@
+AddDynamicTextureUUID
+
+
 Welcome to OpenSimulator (OpenSim for short)!
 
 # Overview
