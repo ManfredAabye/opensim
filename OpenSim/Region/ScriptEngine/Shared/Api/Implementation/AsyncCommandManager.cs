@@ -36,7 +36,7 @@ using OpenSim.Region.Framework.Interfaces;
 using OpenSim.Region.ScriptEngine.Interfaces;
 using OpenSim.Region.ScriptEngine.Shared;
 using OpenSim.Region.ScriptEngine.Shared.Api.Plugins;
-using ScriptTimer=OpenSim.Region.ScriptEngine.Shared.Api.Plugins.ScriptTimer;
+using ScriptTimer = OpenSim.Region.ScriptEngine.Shared.Api.Plugins.ScriptTimer;
 using System.Reflection;
 using log4net;
 
@@ -187,34 +187,34 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             cmdHandlerThreadCycleSleepms = Utils.Clamp(cmdHandlerThreadCycleSleepms, 25, 250);
         }
 
-/*
-        ~AsyncCommandManager()
-        {
-            // Shut down thread
-
-            try
-            {
-                lock (staticLock)
+        /*
+                ~AsyncCommandManager()
                 {
-                    numInstances--;
-                    if(numInstances > 0)
-                        return;
-                    if (cmdHandlerThread != null)
+                    // Shut down thread
+
+                    try
                     {
-                        if (cmdHandlerThread.IsAlive == true)
+                        lock (staticLock)
                         {
-                            cmdHandlerThread.Abort();
-                            //cmdHandlerThread.Join();
-                            cmdHandlerThread = null;
+                            numInstances--;
+                            if(numInstances > 0)
+                                return;
+                            if (cmdHandlerThread != null)
+                            {
+                                if (cmdHandlerThread.IsAlive == true)
+                                {
+                                    cmdHandlerThread.Abort();
+                                    //cmdHandlerThread.Join();
+                                    cmdHandlerThread = null;
+                                }
+                            }
                         }
                     }
+                    catch
+                    {
+                    }
                 }
-            }
-            catch
-            {
-            }
-        }
-*/
+        */
         /// <summary>
         /// Main loop for the manager thread
         /// </summary>
@@ -230,7 +230,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                     DoOneCmdHandlerPass();
                     Watchdog.UpdateThread();
                 }
-                catch ( System.Threading.ThreadAbortException)
+                catch (System.Threading.ThreadAbortException)
                 {
                     //Thread.ResetAbort();
                     running = false;
@@ -247,7 +247,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             lock (staticLock)
             {
                 // Check XMLRPCRequests
-                try { m_XmlRequest[m_ScriptEngines[0]].CheckXMLRPCRequests(); } catch {}
+                try { m_XmlRequest[m_ScriptEngines[0]].CheckXMLRPCRequests(); } catch { }
 
                 foreach (IScriptEngine s in m_ScriptEngines)
                 {
@@ -255,13 +255,13 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                     try { m_HttpRequest[s].CheckHttpRequests(); } catch { }
 
                     // Check ScriptTimers
-                    try { m_ScriptTimer[s].CheckTimerEvents(); } catch {}
+                    try { m_ScriptTimer[s].CheckTimerEvents(); } catch { }
 
                     // Check Sensors
-                    try { m_SensorRepeat[s].CheckSenseRepeaterEvents(); } catch {}
+                    try { m_SensorRepeat[s].CheckSenseRepeaterEvents(); } catch { }
 
                     // Check dataserver
-                    try { m_Dataserver[s].ExpireRequests(); } catch {}
+                    try { m_Dataserver[s].ExpireRequests(); } catch { }
                 }
             }
         }
@@ -274,7 +274,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         public static void RemoveScript(IScriptEngine engine, uint localID, UUID itemID)
         {
             // Remove a specific script
-//            m_log.DebugFormat("[ASYNC COMMAND MANAGER]: Removing facilities for script {0}", itemID);
+            //            m_log.DebugFormat("[ASYNC COMMAND MANAGER]: Removing facilities for script {0}", itemID);
 
             lock (staticLock)
             {
@@ -284,7 +284,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 // Remove from: ScriptTimers
                 m_ScriptTimer[engine].UnSetTimerEvents(localID, itemID);
 
-                if(engine.World != null)
+                if (engine.World != null)
                 {
                     // Remove from: HttpRequest
                     IHttpRequestModule iHttpReq = engine.World.RequestModuleInterface<IHttpRequestModule>();
@@ -407,7 +407,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                     data.AddRange(listeners);
                 }
 
-                Object[] ScriptTimers=m_ScriptTimer[engine].GetSerializationData(itemID);
+                Object[] ScriptTimers = m_ScriptTimer[engine].GetSerializationData(itemID);
                 if (ScriptTimers.Length > 0)
                 {
                     data.Add("timer");
@@ -436,29 +436,29 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             while (idx < data.Length)
             {
                 string type = data[idx].ToString();
-                len = (int)data[idx+1];
-                idx+=2;
+                len = (int)data[idx + 1];
+                idx += 2;
 
                 if (len > 0)
                 {
                     Object[] item = new Object[len];
                     Array.Copy(data, idx, item, 0, len);
 
-                    idx+=len;
+                    idx += len;
 
                     lock (staticLock)
                     {
-                    switch (type)
-                    {
-                        case "listener":
-                            m_Listener[engine].CreateFromData(itemID, hostID, item);
-                            break;
-                        case "timer":
-                            m_ScriptTimer[engine].CreateFromData(localID, itemID, hostID, item);
-                            break;
-                        case "sensor":
-                            m_SensorRepeat[engine].CreateFromData(localID, itemID, hostID, item);
-                            break;
+                        switch (type)
+                        {
+                            case "listener":
+                                m_Listener[engine].CreateFromData(itemID, hostID, item);
+                                break;
+                            case "timer":
+                                m_ScriptTimer[engine].CreateFromData(localID, itemID, hostID, item);
+                                break;
+                            case "sensor":
+                                m_SensorRepeat[engine].CreateFromData(localID, itemID, hostID, item);
+                                break;
                         }
                     }
                 }

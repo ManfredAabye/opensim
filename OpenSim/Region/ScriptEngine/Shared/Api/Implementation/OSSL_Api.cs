@@ -109,19 +109,19 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
     // flags functions threat control
     public enum AllowedControlFlags : int
     {
-        NONE                = 0,
-        PARCEL_OWNER        = 1,
+        NONE = 0,
+        PARCEL_OWNER = 1,
         PARCEL_GROUP_MEMBER = 1 << 1,
-        ESTATE_MANAGER      = 1 << 2,
-        ESTATE_OWNER        = 1 << 3,
-        ACTIVE_GOD          = 1 << 4,
-        GOD                 = 1 << 5,
-        GRID_GOD            = 1 << 6,
+        ESTATE_MANAGER = 1 << 2,
+        ESTATE_OWNER = 1 << 3,
+        ACTIVE_GOD = 1 << 4,
+        GOD = 1 << 5,
+        GRID_GOD = 1 << 6,
 
         // internal
-        THREATLEVEL         = 1 << 28,
-        OWNERUUID           = 1 << 29,
-        CREATORUUID         = 1 << 30,
+        THREATLEVEL = 1 << 28,
+        OWNERUUID = 1 << 29,
+        CREATORUUID = 1 << 30,
         //int thingie       = 1 << 31,
         ALL = 0x0FFFFFFF
     }
@@ -183,7 +183,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             //private init
             lock (m_OSSLLock)
             {
-                if(m_doneSharedInit)
+                if (m_doneSharedInit)
                     return;
 
                 m_osslconfig = m_ScriptEngine.ConfigSource.Configs["OSSL"];
@@ -197,7 +197,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
                 m_PermissionErrortoOwner = m_osslconfig.GetBoolean("PermissionErrorToOwner", m_PermissionErrortoOwner);
 
-                m_ScriptDelayFactor =  m_ScriptEngine.Config.GetFloat("ScriptDelayFactor", 1.0f);
+                m_ScriptDelayFactor = m_ScriptEngine.Config.GetFloat("ScriptDelayFactor", 1.0f);
                 m_ScriptDistanceFactor = m_ScriptEngine.Config.GetFloat("ScriptDistanceLimitFactor", 1.0f);
 
                 string risk = m_osslconfig.GetString("OSFunctionThreatLevel", "VeryLow");
@@ -239,7 +239,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 {
                     PSTTimeZone = null;
                 }
-                if(PSTTimeZone == null)
+                if (PSTTimeZone == null)
                 {
                     try
                     {
@@ -297,7 +297,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 m_ScriptEngine.SleepScript(m_item.ItemID, 1000);
             //else
             //    Thread.Sleep(1000);
-            }
+        }
 
         // Returns if OSSL is enabled. Throws a script exception if OSSL is not allowed..
         // for safe funtions always active
@@ -366,7 +366,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                             {
                                 string current = id.Trim();
                                 current = current.ToUpper();
-                                switch(current)
+                                switch (current)
                                 {
                                     case "":
                                         break;
@@ -392,22 +392,22 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                                         perms.AllowedControl |= AllowedControlFlags.GRID_GOD;
                                         break;
                                     default:
-                                    {
-                                        if (UUID.TryParse(current, out UUID uuid))
                                         {
-                                            if (uuid.IsNotZero())
+                                            if (UUID.TryParse(current, out UUID uuid))
                                             {
-                                                perms.AllowedOwners ??= new List<UUID>();
-                                                perms.AllowedControl |= AllowedControlFlags.OWNERUUID;
-                                                perms.AllowedOwners.Add(uuid);
+                                                if (uuid.IsNotZero())
+                                                {
+                                                    perms.AllowedOwners ??= new List<UUID>();
+                                                    perms.AllowedControl |= AllowedControlFlags.OWNERUUID;
+                                                    perms.AllowedOwners.Add(uuid);
+                                                }
                                             }
+                                            else
+                                            {
+                                                error = true;
+                                            }
+                                            break;
                                         }
-                                        else
-                                        {
-                                            error = true;
-                                        }
-                                        break;
-                                    }
                                 }
                             }
                             if (error)
@@ -440,7 +440,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                         // both empty fallback as disabled
                     }
                 }
-                m_FunctionPerms.TryAdd(function,perms);
+                m_FunctionPerms.TryAdd(function, perms);
             }
 
             AllowedControlFlags functionControl = perms.AllowedControl;
@@ -519,11 +519,11 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             }
 
             // else if no creators its denied
-            if((functionControl & AllowedControlFlags.CREATORUUID) == 0)
+            if ((functionControl & AllowedControlFlags.CREATORUUID) == 0)
                 return $"{function} permission denied";
 
             if (!perms.AllowedCreators.Contains(m_item.CreatorID))
-                return($"{function} permission denied. Script creator is not in the list of users allowed to execute this function and prim owner also has no permission");
+                return ($"{function} permission denied. Script creator is not in the list of users allowed to execute this function and prim owner also has no permission");
 
             if (m_item.CreatorID.NotEqual(m_item.OwnerID))
             {
@@ -545,7 +545,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             delay = (int)(delay * m_ScriptDelayFactor);
             if (delay < 10)
                 return;
-            if(m_item is not null)
+            if (m_item is not null)
                 m_ScriptEngine.SleepScript(m_item.ItemID, delay);
         }
 
@@ -603,7 +603,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         public void osTerrainFlush()
         {
             double now = Util.GetTimeStamp();
-            if(now - m_lastosTerrainFlush < 60)
+            if (now - m_lastosTerrainFlush < 60)
                 return;
             m_lastosTerrainFlush = now;
 
@@ -741,6 +741,16 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             }
         }
 
+
+
+
+
+
+
+
+
+
+
         public string osSetDynamicTextureURL(string dynamicID, string contentType, string url, string extraParams,
                                              int timer)
         {
@@ -772,7 +782,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 IDynamicTextureManager textureManager = World.RequestModuleInterface<IDynamicTextureManager>();
                 UUID createdTexture =
                     textureManager.AddDynamicTextureURL(World.RegionInfo.RegionID, m_host.UUID, contentType, url,
-                                                        extraParams, true, (byte) alpha);
+                                                        extraParams, true, (byte)alpha);
                 return createdTexture.ToString();
             }
             else
@@ -793,7 +803,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 IDynamicTextureManager textureManager = World.RequestModuleInterface<IDynamicTextureManager>();
                 UUID createdTexture =
                     textureManager.AddDynamicTextureURL(World.RegionInfo.RegionID, m_host.UUID, contentType, url,
-                                                        extraParams, blend, disp, (byte) alpha, face);
+                                                        extraParams, blend, disp, (byte)alpha, face);
                 return createdTexture.ToString();
             }
             else
@@ -803,6 +813,81 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
             return ScriptBaseClass.NULL_KEY;
         }
+
+
+
+
+
+        public string osSetDynamicTextureUUID(string dynamicID, string contentType, UUID textureUUID, string extraParams, int timer)
+        {
+            CheckThreatLevel(ThreatLevel.VeryHigh, "osSetDynamicTextureUUID");
+
+            if (dynamicID.Length == 0)
+            {
+                IDynamicTextureManager textureManager = World.RequestModuleInterface<IDynamicTextureManager>();
+                UUID createdTexture =
+                    textureManager.AddDynamicTextureUUID(World.RegionInfo.RegionID, m_host.UUID, contentType, textureUUID, extraParams);
+                return createdTexture.ToString();
+            }
+            else
+            {
+                //TODO update existing dynamic textures
+            }
+
+            return ScriptBaseClass.NULL_KEY;
+        }
+
+        public string osSetDynamicTextureUUIDBlend(string dynamicID, string contentType, UUID textureUUID, string extraParams, int timer, int alpha)
+        {
+            CheckThreatLevel(ThreatLevel.VeryHigh, "osSetDynamicTextureUUIDBlend");
+
+            if (dynamicID.Length == 0)
+            {
+                IDynamicTextureManager textureManager = World.RequestModuleInterface<IDynamicTextureManager>();
+                UUID createdTexture =
+                    textureManager.AddDynamicTextureUUID(World.RegionInfo.RegionID, m_host.UUID, contentType, textureUUID, extraParams, true, (byte)alpha);
+                return createdTexture.ToString();
+            }
+            else
+            {
+                //TODO update existing dynamic textures
+            }
+
+            return ScriptBaseClass.NULL_KEY;
+        }
+
+        public string osSetDynamicTextureUUIDBlendFace(string dynamicID, string contentType, UUID textureUUID, string extraParams, bool blend, int disp, int timer, int alpha, int face)
+        {
+            CheckThreatLevel(ThreatLevel.VeryHigh, "osSetDynamicTextureUUIDBlendFace");
+
+            if (dynamicID.Length == 0)
+            {
+                IDynamicTextureManager textureManager = World.RequestModuleInterface<IDynamicTextureManager>();
+                UUID createdTexture =
+                    textureManager.AddDynamicTextureUUID(World.RegionInfo.RegionID, m_host.UUID, contentType, textureUUID, extraParams, blend, disp, (byte)alpha, face);
+                return createdTexture.ToString();
+            }
+            else
+            {
+                //TODO update existing dynamic textures
+            }
+
+            return ScriptBaseClass.NULL_KEY;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public string osSetDynamicTextureData(string dynamicID, string contentType, string data, string extraParams,
                                            int timer)
@@ -855,7 +940,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                     }
                     UUID createdTexture =
                         textureManager.AddDynamicTextureData(World.RegionInfo.RegionID, m_host.UUID, contentType, data,
-                                                            extraParams, true, (byte) alpha);
+                                                            extraParams, true, (byte)alpha);
                     return createdTexture.ToString();
                 }
             }
@@ -870,7 +955,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         public string osSetDynamicTextureDataBlendFace(string dynamicID, string contentType, string data, string extraParams,
                                           bool blend, int disp, int timer, int alpha, int face)
         {
-            CheckThreatLevel(ThreatLevel.VeryLow , "osSetDynamicTextureDataBlendFace");
+            CheckThreatLevel(ThreatLevel.VeryLow, "osSetDynamicTextureDataBlendFace");
 
             if (dynamicID.Length == 0)
             {
@@ -883,7 +968,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                     }
                     UUID createdTexture =
                         textureManager.AddDynamicTextureData(World.RegionInfo.RegionID, m_host.UUID, contentType, data,
-                                                            extraParams, blend, disp, (byte) alpha, face);
+                                                            extraParams, blend, disp, (byte)alpha, face);
                     return createdTexture.ToString();
                 }
             }
@@ -918,7 +1003,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
         private bool checkAllowAgentTPbyLandOwner(UUID agentId, Vector3 pos)
         {
-            if(m_host.OwnerID.Equals(agentId))
+            if (m_host.OwnerID.Equals(agentId))
                 return true;
 
             if (m_item.PermsGranter.Equals(agentId))
@@ -928,28 +1013,28 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             }
 
             ILandObject land = World.LandChannel.GetLandObject(pos);
-            if(land is null)
+            if (land is null)
                 return true;
 
             LandData landdata = land.LandData;
-            if(landdata is null)
+            if (landdata is null)
                 return true;
 
-            if(landdata.OwnerID.Equals(m_host.OwnerID))
+            if (landdata.OwnerID.Equals(m_host.OwnerID))
                 return true;
 
             EstateSettings es = World.RegionInfo.EstateSettings;
-            if(es is not null && es.IsEstateManagerOrOwner(m_host.OwnerID))
+            if (es is not null && es.IsEstateManagerOrOwner(m_host.OwnerID))
                 return true;
 
-            if(!landdata.IsGroupOwned)
+            if (!landdata.IsGroupOwned)
                 return false;
 
             UUID landGroup = landdata.GroupID;
-            if(landGroup.IsZero())
+            if (landGroup.IsZero())
                 return false;
 
-            if(landGroup.Equals(m_host.GroupID))
+            if (landGroup.Equals(m_host.GroupID))
                 return true;
 
             return false;
@@ -1143,7 +1228,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         {
             CheckThreatLevel(ThreatLevel.VeryHigh, "osForceOtherSit");
 
-            if(UUID.TryParse( target, out UUID targetID))
+            if (UUID.TryParse(target, out UUID targetID))
                 ForceSit(avatar, targetID);
         }
 
@@ -1153,7 +1238,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
 
             ScenePresence presence = World.GetScenePresence(agentID);
-            if(presence is null)
+            if (presence is null)
                 return;
 
             SceneObjectPart part = World.GetSceneObjectPart(targetID);
@@ -1172,7 +1257,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             CheckThreatLevel(ThreatLevel.None, "osGetAgents");
 
             LSL_List result = new();
-            World.ForEachRootScenePresence(delegate(ScenePresence sp)
+            World.ForEachRootScenePresence(delegate (ScenePresence sp)
             {
                 result.Add(new LSL_String(sp.Name));
             });
@@ -1182,10 +1267,10 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         public string osGetAgentIP(string agent)
         {
             CheckThreatLevel(ThreatLevel.Severe, "osGetAgentIP");
-            if(!(World.Permissions.IsGod(m_host.OwnerID))) // user god always needed
+            if (!(World.Permissions.IsGod(m_host.OwnerID))) // user god always needed
                 return string.Empty;
 
-            if(!UUID.TryParse(agent, out UUID avatarID))
+            if (!UUID.TryParse(agent, out UUID avatarID))
                 return string.Empty;
 
             ScenePresence target = World.GetScenePresence(avatarID);
@@ -1215,11 +1300,11 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             {
                 if (inv.Value.Type == (int)AssetType.Animation)
                 {
-                   if (inv.Value.Name == animation)
-                   {
-                       animID = inv.Value.AssetID;
-                       break;
-                   }
+                    if (inv.Value.Name == animation)
+                    {
+                        animID = inv.Value.AssetID;
+                        break;
+                    }
                 }
             }
             m_host.TaskInventory.LockItemsForRead(false);
@@ -1302,7 +1387,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         {
             CheckThreatLevel();
 
-            drawList += "MoveTo "+ startX+","+ startY +"; LineTo "+endX +","+endY +"; ";
+            drawList += "MoveTo " + startX + "," + startY + "; LineTo " + endX + "," + endY + "; ";
             return drawList;
         }
 
@@ -1392,7 +1477,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         {
             CheckThreatLevel();
 
-            drawList += "FontSize "+ fontSize +"; ";
+            drawList += "FontSize " + fontSize + "; ";
             return drawList;
         }
 
@@ -1400,7 +1485,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         {
             CheckThreatLevel();
 
-            drawList += "FontName "+ fontName +"; ";
+            drawList += "FontName " + fontName + "; ";
             return drawList;
         }
 
@@ -1490,7 +1575,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         {
             CheckThreatLevel();
 
-            drawList +="Image " +width + "," + height+ ","+ imageUrl +"; " ;
+            drawList += "Image " + width + "," + height + "," + imageUrl + "; ";
             return drawList;
         }
 
@@ -1662,10 +1747,10 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         private double GetSunParam(string param)
         {
             param = param.ToLower();
-            switch(param)
+            switch (param)
             {
                 case "day_length":
-                     return m_envModule is null ?  14400 : m_envModule.GetDayLength(m_host.AbsolutePosition);
+                    return m_envModule is null ? 14400 : m_envModule.GetDayLength(m_host.AbsolutePosition);
                 case "year_length":
                     return 365;
                 case "day_night_offset":
@@ -1760,7 +1845,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             int endx = (int)(pos1.x > pos2.x ? pos1.x : pos2.x);
             int endy = (int)(pos1.y > pos2.y ? pos1.y : pos2.y);
 
-            World.LandChannel.Join(startx,starty,endx,endy,m_host.OwnerID);
+            World.LandChannel.Join(startx, starty, endx, endy, m_host.OwnerID);
         }
 
         public void osParcelSubdivide(LSL_Vector pos1, LSL_Vector pos2)
@@ -1772,7 +1857,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             int endx = (int)(pos1.x > pos2.x ? pos1.x : pos2.x);
             int endy = (int)(pos1.y > pos2.y ? pos1.y : pos2.y);
 
-            World.LandChannel.Subdivide(startx,starty,endx,endy,m_host.OwnerID);
+            World.LandChannel.Subdivide(startx, starty, endx, endy, m_host.OwnerID);
         }
 
         public void osParcelSetDetails(LSL_Vector pos, LSL_List rules)
@@ -1854,7 +1939,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                         {
                             if (UUID.TryParse(arg, out uuid))
                             {
-                                if(newLand.OwnerID.NotEqual(uuid))
+                                if (newLand.OwnerID.NotEqual(uuid))
                                 {
                                     changed = true;
                                     newLand.OwnerID = uuid;
@@ -1870,9 +1955,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                         {
                             if (UUID.TryParse(arg, out uuid))
                             {
-                                if(newLand.GroupID.NotEqual(uuid))
+                                if (newLand.GroupID.NotEqual(uuid))
                                 {
-                                    if(uuid.IsZero())
+                                    if (uuid.IsZero())
                                     {
                                         changed = true;
                                         newLand.GroupID = uuid;
@@ -1900,7 +1985,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                         break;
 
                     case ScriptBaseClass.PARCEL_DETAILS_CLAIMDATE:
-                        if(es is not null && !es.IsEstateManagerOrOwner(m_host.OwnerID))
+                        if (es is not null && !es.IsEstateManagerOrOwner(m_host.OwnerID))
                         {
                             OSSLShoutError("script owner does not have permission to modify the parcel CLAIM DATE");
                         }
@@ -1909,7 +1994,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                             int date = rules.GetIntegerItem(idx++);
                             if (date == 0)
                                 date = Util.UnixTimeSinceEpoch();
-                            if(newLand.ClaimDate != date)
+                            if (newLand.ClaimDate != date)
                             {
                                 changed = true;
                                 newLand.ClaimDate = date;
@@ -1920,7 +2005,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                     case ScriptBaseClass.PARCEL_DETAILS_SEE_AVATARS:
                         iarg = rules.GetIntegerItem(idx++);
                         bool newavs = iarg != 0;
-                        if(newLand.SeeAVs != newavs)
+                        if (newLand.SeeAVs != newavs)
                         {
                             changed = true;
                             changedSeeAvs = true;
@@ -1933,7 +2018,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                     case ScriptBaseClass.PARCEL_DETAILS_ANY_AVATAR_SOUNDS:
                         iarg = rules.GetIntegerItem(idx++);
                         bool newavsounds = iarg != 0;
-                        if(newLand.AnyAVSounds != newavsounds)
+                        if (newLand.AnyAVSounds != newavsounds)
                         {
                             changed = true;
                             newLand.AnyAVSounds = newavsounds;
@@ -1943,37 +2028,37 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                     case ScriptBaseClass.PARCEL_DETAILS_GROUP_SOUNDS:
                         iarg = rules.GetIntegerItem(idx++);
                         bool newgrpsounds = iarg != 0;
-                        if(newLand.GroupAVSounds != newgrpsounds)
+                        if (newLand.GroupAVSounds != newgrpsounds)
                         {
                             changed = true;
                             newLand.GroupAVSounds = newgrpsounds;
                         }
                         break;
-                    }
+                }
             }
-            if(changed)
+            if (changed)
             {
                 World.LandChannel.UpdateLandObject(newLand.LocalID, newLand);
 
-                if(changedneedupdate)
+                if (changedneedupdate)
                 {
-                    UUID parcelID= newLand.GlobalID;
+                    UUID parcelID = newLand.GlobalID;
                     World.ForEachRootScenePresence(delegate (ScenePresence avatar)
                     {
                         if (avatar is null || avatar.IsDeleted || avatar.IsInTransit)
                             return;
 
-                        if(changedSeeAvs && avatar.currentParcelUUID.Equals(parcelID))
+                        if (changedSeeAvs && avatar.currentParcelUUID.Equals(parcelID))
                             avatar.currentParcelUUID = parcelID; // force parcel flags review
 
-                        if(avatar.ControllingClient is null)
+                        if (avatar.ControllingClient is null)
                             return;
 
                         // this will be needed for some things like damage etc
-//                        if(avatar.currentParcelUUID == parcelID)
-//                            startLandObject.SendLandUpdateToClient(avatar.ControllingClient);
+                        //                        if(avatar.currentParcelUUID == parcelID)
+                        //                            startLandObject.SendLandUpdateToClient(avatar.ControllingClient);
 
-                        if(changedoverlay && !avatar.IsNPC)
+                        if (changedoverlay && !avatar.IsNPC)
                             World.LandChannel.SendParcelsOverlay(avatar.ControllingClient);
                     });
                 }
@@ -2014,7 +2099,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             IVoiceModule voiceModule = World.RequestModuleInterface<IVoiceModule>();
 
             if (voiceModule is not null)
-                voiceModule.setLandSIPAddress(SIPAddress,land.LandData.GlobalID);
+                voiceModule.setLandSIPAddress(SIPAddress, land.LandData.GlobalID);
             else
                 OSSLError("osSetParcelSIPAddress: No voice module enabled for this land");
         }
@@ -2096,7 +2181,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 ret = m_ScriptEngine.World.PhysicsScene.EngineName;
                 // An old physics engine might have an uninitialized engine type
                 ret ??= "UnknownEngine";
-                }
+            }
             return ret;
         }
 
@@ -2107,7 +2192,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             // require their user to know what they are doing (see script
             // kiddie)
             //
-            CheckThreatLevel(ThreatLevel.High,"osGetSimulatorVersion");
+            CheckThreatLevel(ThreatLevel.High, "osGetSimulatorVersion");
 
             return m_ScriptEngine.World.GetSimulatorVersion();
         }
@@ -2168,7 +2253,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
             }
 
-            if(objUUID.IsZero())
+            if (objUUID.IsZero())
                 return;
 
             SceneObjectGroup sceneOG = World.GetSceneObjectGroup(objUUID);
@@ -2180,7 +2265,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
 
             // restrict to objects rezzed by host
-            if(sceneOG.RezzerID.Equals(m_host.ParentGroup.UUID))
+            if (sceneOG.RezzerID.Equals(m_host.ParentGroup.UUID))
             {
                 // harakiri check should be true alwaya
                 if (sceneOG.UUID.NotEqual(m_host.ParentGroup.UUID))
@@ -2298,7 +2383,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 {
                     string line = NotecardCache.GetLine(assetID, count) + "\n";
 
-    //                m_log.DebugFormat("[OSSL]: From notecard {0} loading line {1}", notecardNameOrUuid, line);
+                    //                m_log.DebugFormat("[OSSL]: From notecard {0} loading line {1}", notecardNameOrUuid, line);
 
                     notecardData.Append(line);
                 }
@@ -2459,7 +2544,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             CheckThreatLevel(ThreatLevel.Low, "osAvatarName2Key");
 
             ScenePresence sp = World.GetScenePresence(firstname, lastname);
-            if(sp is not null)
+            if (sp is not null)
                 return sp.UUID.ToString();
 
             IUserManagement userManager = World.RequestModuleInterface<IUserManagement>();
@@ -2507,7 +2592,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             if (UUID.TryParse(id, out UUID key))
             {
                 ScenePresence sp = World.GetScenePresence(key);
-                if(sp is not null)
+                if (sp is not null)
                     return sp.Name;
 
                 UserAccount account = World.UserAccountService.GetUserAccount(World.RegionInfo.ScopeID, key);
@@ -2520,7 +2605,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
                     if (uInfo is not null)
                     {
-                        if (Util.ParseFullUniversalUserIdentifier(uInfo.UserID, out _, 
+                        if (Util.ParseFullUniversalUserIdentifier(uInfo.UserID, out _,
                                 out string gridURL, out string firstName, out string lastName))
                         {
                             string grid = new Uri(gridURL).Authority;
@@ -2560,8 +2645,8 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             if (string.IsNullOrEmpty(url))
                 return "Configuration Error!";
 
-            string verb ="/json_grid_info";
-            OSDMap info =  WebUtil.GetFromService($"{url}{verb}", 3000);
+            string verb = "/json_grid_info";
+            OSDMap info = WebUtil.GetFromService($"{url}{verb}", 3000);
 
             if (info["Success"].AsBoolean() != true)
                 return "Get GridInfo Failed!";
@@ -2740,7 +2825,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
             // Find matches beginning at start position
             Regex matcher = new(pattern);
-            return matcher.Replace(src,replace,count,start);
+            return matcher.Replace(src, replace, count, start);
         }
 
         public string osLoadedCreationDate()
@@ -2796,7 +2881,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             {
                 linknumber = remaining.GetIntegerItem(0);
                 parts = m_LSL_Api.GetLinkParts(linknumber);
-                if(parts.Count == 0)
+                if (parts.Count == 0)
                     break;
 
                 rules = remaining.GetSublist(1, -1);
@@ -2851,7 +2936,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
             // have to get the npc module also here to set the default Not Owned
             INPCModule module = World.RequestModuleInterface<INPCModule>();
-            if(module is null)
+            if (module is null)
                 return LSL_Key.NullKey;
 
             bool owned = (module.NPCOptionFlags & NPCOptionsFlags.AllowNotOwned) == 0;
@@ -2880,7 +2965,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             }
 
             INPCModule module = World.RequestModuleInterface<INPCModule>();
-            if(module is null)
+            if (module is null)
             {
                 OSSLError("NPC module not enabled");
                 return LSL_Key.NullKey;
@@ -2894,19 +2979,19 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             // check creation options
             NPCOptionsFlags createFlags = module.NPCOptionFlags;
 
-            if((createFlags & NPCOptionsFlags.AllowNotOwned) == 0 && !owned)
+            if ((createFlags & NPCOptionsFlags.AllowNotOwned) == 0 && !owned)
             {
                 OSSLError("Not owned NPCs disabled");
                 owned = true; // we should get here...
             }
 
-            if((createFlags & NPCOptionsFlags.AllowSenseAsAvatar) == 0 && senseAsAgent)
+            if ((createFlags & NPCOptionsFlags.AllowSenseAsAvatar) == 0 && senseAsAgent)
             {
                 OSSLError("NPC allow sense as Avatar disabled");
                 senseAsAgent = false;
             }
 
-            if(hostGroupID && !m_host.GroupID.IsZero())
+            if (hostGroupID && !m_host.GroupID.IsZero())
             {
                 if (m_groupsModule != null)
                 {
@@ -2919,16 +3004,16 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
                     groupID = m_host.GroupID;
 
-                    if((createFlags & NPCOptionsFlags.NoNPCGroup) != 0)
+                    if ((createFlags & NPCOptionsFlags.NoNPCGroup) != 0)
                     {
                         GroupRecord grprec = m_groupsModule.GetGroupRecord(m_host.GroupID);
-                        if(grprec != null && grprec.GroupName != "")
+                        if (grprec != null && grprec.GroupName != "")
                             groupTitle = grprec.GroupName;
                     }
                 }
             }
 
-            if((createFlags & NPCOptionsFlags.NoNPCGroup) == 0)
+            if ((createFlags & NPCOptionsFlags.NoNPCGroup) == 0)
             {
                 if (!string.IsNullOrEmpty(firstname) || !string.IsNullOrEmpty(lastname))
                 {
@@ -2937,7 +3022,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 }
             }
 
-            if((createFlags & NPCOptionsFlags.AllowCloneOtherAvatars) != 0)
+            if ((createFlags & NPCOptionsFlags.AllowCloneOtherAvatars) != 0)
             {
                 if (UUID.TryParse(notecard, out UUID id))
                 {
@@ -2949,7 +3034,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
             if (appearance is null)
             {
-                if(!string.IsNullOrWhiteSpace(notecard))
+                if (!string.IsNullOrWhiteSpace(notecard))
                 {
                     string appearanceSerialized = LoadNotecard(notecard);
                     if (appearanceSerialized is null)
@@ -3047,9 +3132,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                     OSSLError(string.Format("osNpcCreate: Notecard reference '{0}' not found.", notecard));
 
                 OSDMap appearanceOsd = (OSDMap)OSDParser.DeserializeLLSDXml(appearanceSerialized);
-//                OSD a = OSDParser.DeserializeLLSDXml(appearanceSerialized);
-//                Console.WriteLine("appearanceSerialized {0}", appearanceSerialized);
-//                Console.WriteLine("a.Type {0}, a.ToString() {1}", a.Type, a);
+                //                OSD a = OSDParser.DeserializeLLSDXml(appearanceSerialized);
+                //                Console.WriteLine("appearanceSerialized {0}", appearanceSerialized);
+                //                Console.WriteLine("a.Type {0}, a.ToString() {1}", a.Type, a);
                 AvatarAppearance appearance = new();
                 appearance.Unpack(appearanceOsd);
 
@@ -3387,14 +3472,14 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             m_host.TaskInventory.LockItemsForRead(true);
             foreach (KeyValuePair<UUID, TaskInventoryItem> inv in m_host.TaskInventory)
             {
-               if (inv.Value.Type == (int)AssetType.Animation)
-               {
-                   if (inv.Value.Name == animation)
-                   {
-                       animID = inv.Value.AssetID;
-                       break;
-                   }
-               }
+                if (inv.Value.Type == (int)AssetType.Animation)
+                {
+                    if (inv.Value.Name == animation)
+                    {
+                        animID = inv.Value.AssetID;
+                        break;
+                    }
+                }
             }
             m_host.TaskInventory.LockItemsForRead(false);
 
@@ -3576,7 +3661,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             int vpShapeMaleIndex = 0;
             bool indexFound = false;
             VisualParam param = new();
-            foreach(var vpEntry in VisualParams.Params)
+            foreach (var vpEntry in VisualParams.Params)
             {
                 param = vpEntry.Value;
                 if (param.Name == "male" && param.Wearable == "shape")
@@ -3621,7 +3706,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             Scene scene = m_ScriptEngine.World;
             GridRegion region;
 
-            if(string.IsNullOrWhiteSpace(regionNameOrID))
+            if (string.IsNullOrWhiteSpace(regionNameOrID))
                 return scene.RegionInfo.RegionSettings.TerrainImageID.ToString();
 
             //If string is a key, use it. Otherwise, try to locate region by name.
@@ -3639,7 +3724,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             return new LSL_Key(key.ToString());
         }
 
-       /// <summary>
+        /// <summary>
         /// Return information regarding various simulator statistics (sim fps, physics fps, time
         /// dilation, total number of prims, total number of active scripts, script lps, various
         /// timing data, packets in/out, etc. Basically much the information that's shown in the
@@ -3665,7 +3750,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             CheckThreatLevel();
 
             //Scene scene = m_ScriptEngine.World;
-            RegionInfo reg =  World.RegionInfo;
+            RegionInfo reg = World.RegionInfo;
             //GridRegion region = scene.GridService.GetRegionByUUID(UUID.Zero, World.RegionInfo.RegionID);
             //return new LSL_Vector((float)region.RegionSizeX, (float)region.RegionSizeY, (float)Constants.RegionHeight);
             return new LSL_Vector((float)reg.RegionSizeX, (float)reg.RegionSizeY, 0.0f);
@@ -3717,7 +3802,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         {
             CheckThreatLevel(ThreatLevel.Moderate, "osSetOwnerSpeed");
 
-            if(SpeedModifier > 4)
+            if (SpeedModifier > 4)
                 SpeedModifier = 4;
 
             ScenePresence avatar = World.GetScenePresence(m_host.OwnerID);
@@ -3729,7 +3814,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         {
             CheckThreatLevel(ThreatLevel.Severe, "osKickAvatar");
 
-            if(string.IsNullOrEmpty(alert))
+            if (string.IsNullOrEmpty(alert))
             {
                 World.ForEachRootScenePresence(delegate (ScenePresence sp)
                 {
@@ -3758,7 +3843,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
 
             ScenePresence sp = World.GetScenePresence(id);
-            if(sp is null)
+            if (sp is null)
                 return;
 
             // kick client...
@@ -3809,7 +3894,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                     {
                         INPCModule NPCmodule = World.RequestModuleInterface<INPCModule>();
                         NPCmodule?.DeleteNPC(presence.UUID, World);
-                    return;
+                        return;
                     }
 
                     float healthliveagain = 100;
@@ -3927,14 +4012,14 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             if (linknum < 0 || linknum > m_host.ParentGroup.PrimCount)
                 return;
 
-            if(linknum < 2 && m_host.LinkNum < 2)
+            if (linknum < 2 && m_host.LinkNum < 2)
             {
                 SetProjectionParams(m_host, projection, texture, fov, focus, amb);
                 return;
             }
 
             SceneObjectPart obj = m_host.ParentGroup.GetLinkNumPart(linknum);
-            if(obj is not null)
+            if (obj is not null)
                 SetProjectionParams(obj, projection, texture, fov, focus, amb);
         }
 
@@ -3943,12 +4028,12 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         /// </summary>
         public void osSetProjectionParams(LSL_Key prim, LSL_Integer llprojection, LSL_Key texture, LSL_Float fov, LSL_Float focus, LSL_Float amb)
         {
-            if(UUID.TryParse(prim, out UUID pID) && pID.IsNotZero())
+            if (UUID.TryParse(prim, out UUID pID) && pID.IsNotZero())
             {
                 SceneObjectPart obj = World.GetSceneObjectPart(pID);
-                if(obj is not null)
+                if (obj is not null)
                 {
-                    if(obj.OwnerID.Equals(m_host.OwnerID))
+                    if (obj.OwnerID.Equals(m_host.OwnerID))
                         SetProjectionParams(obj, llprojection, texture, fov, focus, amb);
                 }
             }
@@ -3958,10 +4043,10 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
         private static void SetProjectionParams(SceneObjectPart obj, LSL_Integer llprojection, LSL_Key texture, LSL_Float fov, LSL_Float focus, LSL_Float amb)
         {
-            if(obj is null || obj.IsDeleted || obj.Shape == null)
+            if (obj is null || obj.IsDeleted || obj.Shape == null)
                 return;
 
-            if(llprojection != 0)
+            if (llprojection != 0)
             {
                 if (!UUID.TryParse(texture, out UUID texID))
                     return;
@@ -3977,7 +4062,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
             }
 
-            if(obj.Shape.ProjectionEntry)
+            if (obj.Shape.ProjectionEntry)
             {
                 obj.Shape.ProjectionEntry = false;
 
@@ -4273,7 +4358,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             {
                 foreach (object point in attachmentPoints.Data)
                 {
-                    if(listObjToInt(point, out int ipoint))
+                    if (listObjToInt(point, out int ipoint))
                     {
                         resp.Add(new LSL_Integer(ipoint));
                         if (ipoint <= 0)
@@ -4303,36 +4388,36 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             if (!World.TryGetScenePresence(targetUUID, out ScenePresence target))
                 return;
             if (target.IsDeleted || target.IsInTransit)
-               return;
-            if(target.GetAttachmentsCount() == 0)
+                return;
+            if (target.GetAttachmentsCount() == 0)
                 return;
 
             bool invertPoints = (options & ScriptBaseClass.OS_ATTACH_MSG_INVERT_POINTS) != 0;
             bool msgAll = false;
 
             List<int> aps;
-            if(attachmentPoints.Length > 0)
+            if (attachmentPoints.Length > 0)
             {
                 aps = new List<int>(attachmentPoints.Length);
                 foreach (object point in attachmentPoints.Data)
                 {
                     if (!listObjToInt(point, out int ipoint))
                         return;
-                    if(ipoint == ScriptBaseClass.OS_ATTACH_MSG_ALL)
+                    if (ipoint == ScriptBaseClass.OS_ATTACH_MSG_ALL)
                     {
-                        if(invertPoints)
+                        if (invertPoints)
                             return;
                         msgAll = true;
                         break;
                     }
-                    else if(ipoint > 0)
+                    else if (ipoint > 0)
                         aps.Add(ipoint);
                 }
             }
             else
                 aps = new List<int>();
 
-            if(aps.Count == 0)
+            if (aps.Count == 0)
             {
                 if (!invertPoints && !msgAll)
                     return;
@@ -4365,7 +4450,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             //int penalty = 100;
             foreach (SceneObjectGroup sog in attachments)
             {
-                if(sog.IsDeleted || sog.inTransit || ((sog.ScriptEvents & scriptEvents.dataserver) == 0))
+                if (sog.IsDeleted || sog.inTransit || ((sog.ScriptEvents & scriptEvents.dataserver) == 0))
                     continue;
 
                 if (invertPoints && aps.Contains((int)sog.AttachmentPoint))
@@ -4379,9 +4464,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                     continue;
 
                 SceneObjectPart[] parts = sog.Parts;
-                foreach(SceneObjectPart p in parts)
+                foreach (SceneObjectPart p in parts)
                 {
-                    if((p.ScriptEvents & scriptEvents.dataserver) != 0)
+                    if ((p.ScriptEvents & scriptEvents.dataserver) != 0)
                     {
                         MessageObject(p.UUID, message);
                         //penalty += 10;
@@ -4430,7 +4515,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             CheckThreatLevel(ThreatLevel.None, "osGetRezzingObject");
 
             UUID rezID = m_host.ParentGroup.RezzerID;
-            if(rezID.IsZero() || m_host.ParentGroup.Scene.GetScenePresence(rezID) is not null)
+            if (rezID.IsZero() || m_host.ParentGroup.Scene.GetScenePresence(rezID) is not null)
                 return LSL_Key.NullKey;
             return new LSL_Key(rezID.ToString());
         }
@@ -4443,7 +4528,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         {
             CheckThreatLevel(ThreatLevel.Severe, "osSetContentType");
 
-            m_UrlModule?.HttpContentType(new UUID(id),type);
+            m_UrlModule?.HttpContentType(new UUID(id), type);
         }
 
         /// Shout an error if the object owner did not grant the script the specified permissions.
@@ -4526,10 +4611,10 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         {
             CheckThreatLevel(ThreatLevel.Low, "osListenRegex");
             IWorldComm wComm = m_ScriptEngine.World.RequestModuleInterface<IWorldComm>();
-            if(wComm is null)
+            if (wComm is null)
                 return -1;
 
-            if(!UUID.TryParse(ID, out UUID keyID))
+            if (!UUID.TryParse(ID, out UUID keyID))
                 return -1;
 
             // if we want the name to be used as a regular expression, ensure it is valid first.
@@ -4584,7 +4669,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             CheckThreatLevel(ThreatLevel.Moderate, "osRequestURL");
 
             Hashtable opts = new();
-            for (int i = 0 ; i < options.Length ; i++)
+            for (int i = 0; i < options.Length; i++)
             {
                 object opt = options.Data[i];
                 if (opt.ToString() == "allowXss")
@@ -4602,7 +4687,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             CheckThreatLevel(ThreatLevel.Moderate, "osRequestSecureURL");
 
             Hashtable opts = new();
-            for (int i = 0 ; i < options.Length ; i++)
+            for (int i = 0; i < options.Length; i++)
             {
                 object opt = options.Data[i];
                 if (opt.ToString() == "allowXss")
@@ -4618,13 +4703,13 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         {
             CheckThreatLevel();
 
-            if(impact_sound.Length == 0)
+            if (impact_sound.Length == 0)
             {
                 m_host.CollisionSoundVolume = (float)impact_volume;
                 m_host.CollisionSound = m_host.invalidCollisionSoundUUID;
-                if(impact_volume == 0.0)
+                if (impact_volume == 0.0)
                     m_host.CollisionSoundType = -1; // disable all sounds
-                else if(impact_volume == 1.0f)
+                else if (impact_volume == 1.0f)
                     m_host.CollisionSoundType = 0; // full return to default sounds
                 else
                     m_host.CollisionSoundType = 2; // default sounds with volume
@@ -4633,7 +4718,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             }
             // TODO: Parameter check logic required.
             UUID soundId = ScriptUtils.GetAssetIdFromKeyOrItemName(m_host, impact_sound, AssetType.Sound);
-            if(soundId.IsZero())
+            if (soundId.IsZero())
                 m_host.CollisionSoundType = -1;
             else
             {
@@ -4678,10 +4763,10 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             if (sog is null || sog.IsDeleted)
                 return result;
 
-            sog.GetInertiaData(out float TotalMass, out Vector3 CenterOfMass, out Vector3 Inertia, out Vector4 aux );
-            if(TotalMass > 0)
+            sog.GetInertiaData(out float TotalMass, out Vector3 CenterOfMass, out Vector3 Inertia, out Vector4 aux);
+            if (TotalMass > 0)
             {
-                float t = 1.0f/TotalMass;
+                float t = 1.0f / TotalMass;
                 Inertia.X *= t;
                 Inertia.Y *= t;
                 Inertia.Z *= t;
@@ -4711,15 +4796,15 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         /// the inertia argument is is inertia divided by mass, so corresponds only to the geometric distribution of mass and both can be changed independently.
         /// </remarks>
 
-        public void osSetInertia(LSL_Float mass, LSL_Vector centerOfMass, LSL_Vector principalInertiaScaled,  LSL_Rotation lslrot)
+        public void osSetInertia(LSL_Float mass, LSL_Vector centerOfMass, LSL_Vector principalInertiaScaled, LSL_Rotation lslrot)
         {
             CheckThreatLevel();
 
             SceneObjectGroup sog = m_host.ParentGroup;
-            if(sog is null || sog.IsDeleted)
+            if (sog is null || sog.IsDeleted)
                 return;
 
-            if(mass < 0 || principalInertiaScaled.x < 0 || principalInertiaScaled.y < 0 || principalInertiaScaled.z < 0)
+            if (mass < 0 || principalInertiaScaled.x < 0 || principalInertiaScaled.y < 0 || principalInertiaScaled.z < 0)
                 return;
 
             // need more checks
@@ -4735,7 +4820,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             Vector4 rot = new((float)lslrot.x, (float)lslrot.y, (float)lslrot.y, (float)lslrot.s);
             rot.Normalize();
 
-            sog.SetInertiaData(m, CenterOfMass, Inertia, rot );
+            sog.SetInertiaData(m, CenterOfMass, Inertia, rot);
         }
 
         /// <summary>
@@ -4754,10 +4839,10 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             CheckThreatLevel();
 
             SceneObjectGroup sog = m_host.ParentGroup;
-            if(sog is null || sog.IsDeleted)
+            if (sog is null || sog.IsDeleted)
                 return;
 
-            if(mass < 0)
+            if (mass < 0)
                 return;
 
             // need more checks
@@ -4769,14 +4854,14 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             float m = (float)mass;
             float t = m / 12.0f;
 
-            Vector3 Inertia = new( t * (ly*ly + lz*lz),
-                                   t * (lx*lx + lz*lz),
-                                   t * (lx*lx + ly*ly));
+            Vector3 Inertia = new(t * (ly * ly + lz * lz),
+                                   t * (lx * lx + lz * lz),
+                                   t * (lx * lx + ly * ly));
 
             Vector4 rot = new((float)lslrot.x, (float)lslrot.y, (float)lslrot.z, (float)lslrot.s);
             rot.Normalize();
 
-            sog.SetInertiaData(m, CenterOfMass, Inertia, rot );
+            sog.SetInertiaData(m, CenterOfMass, Inertia, rot);
         }
 
         /// <summary>
@@ -4789,15 +4874,15 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         /// <param name="centerOfMass">location of center of mass relative to root prim in local coords</param>
         /// <remarks>
         /// </remarks>
-        public void osSetInertiaAsSphere(LSL_Float mass,  LSL_Float radius, LSL_Vector centerOfMass)
+        public void osSetInertiaAsSphere(LSL_Float mass, LSL_Float radius, LSL_Vector centerOfMass)
         {
             CheckThreatLevel();
 
             SceneObjectGroup sog = m_host.ParentGroup;
-            if(sog is null || sog.IsDeleted)
+            if (sog is null || sog.IsDeleted)
                 return;
 
-            if(mass < 0)
+            if (mass < 0)
                 return;
 
             // need more checks
@@ -4808,7 +4893,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             float t = 0.4f * m * r * r;
 
             Vector3 Inertia = new(t, t, t);
-            sog.SetInertiaData(m, CenterOfMass, Inertia, new Vector4(0f, 0f, 0f,1.0f));
+            sog.SetInertiaData(m, CenterOfMass, Inertia, new Vector4(0f, 0f, 0f, 1.0f));
         }
 
         /// <summary>
@@ -4824,15 +4909,15 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         /// <remarks>
         /// cylinder axis aligned with Z axis. For other orientations provide the rotation.
         /// </remarks>
-        public void osSetInertiaAsCylinder(LSL_Float mass,  LSL_Float radius, LSL_Float length, LSL_Vector centerOfMass, LSL_Rotation lslrot)
+        public void osSetInertiaAsCylinder(LSL_Float mass, LSL_Float radius, LSL_Float length, LSL_Vector centerOfMass, LSL_Rotation lslrot)
         {
             CheckThreatLevel();
 
             SceneObjectGroup sog = m_host.ParentGroup;
-            if(sog is null || sog.IsDeleted)
+            if (sog is null || sog.IsDeleted)
                 return;
 
-            if(mass < 0)
+            if (mass < 0)
                 return;
 
             // need more checks
@@ -4865,44 +4950,44 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             CheckThreatLevel();
 
             SceneObjectGroup sog = m_host.ParentGroup;
-            if(sog is null || sog.IsDeleted)
+            if (sog is null || sog.IsDeleted)
                 return;
 
-            sog.SetInertiaData(-1, Vector3.Zero, Vector3.Zero, Vector4.Zero );
+            sog.SetInertiaData(-1, Vector3.Zero, Vector3.Zero, Vector4.Zero);
         }
 
         private bool checkAllowObjectTPbyLandOwner(Vector3 pos)
         {
             ILandObject land = World.LandChannel.GetLandObject(pos);
-            if(land is null)
+            if (land is null)
                 return true;
 
             LandData landdata = land.LandData;
-            if(landdata is null)
+            if (landdata is null)
                 return true;
 
             UUID hostOwner = m_host.OwnerID;
-            if(landdata.OwnerID.Equals(hostOwner))
+            if (landdata.OwnerID.Equals(hostOwner))
                 return true;
 
             EstateSettings es = World.RegionInfo.EstateSettings;
-            if(es is not null && es.IsEstateManagerOrOwner(hostOwner))
+            if (es is not null && es.IsEstateManagerOrOwner(hostOwner))
                 return true;
 
-            if(!landdata.IsGroupOwned)
+            if (!landdata.IsGroupOwned)
                 return false;
 
             UUID landGroup = landdata.GroupID;
-            if(landGroup.IsZero())
+            if (landGroup.IsZero())
                 return false;
 
-            if(landGroup.Equals(m_host.GroupID))
+            if (landGroup.Equals(m_host.GroupID))
                 return true;
 
             return false;
         }
 
-       /// <summary>
+        /// <summary>
         /// teleports a object (full linkset)
         /// </summary>
         /// <param name="objectUUID">the id of the linkset to teleport</param>
@@ -4929,13 +5014,13 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             }
 
             SceneObjectGroup sog = World.GetSceneObjectGroup(objUUID);
-            if(sog is null || sog.IsDeleted || sog.inTransit)
+            if (sog is null || sog.IsDeleted || sog.inTransit)
                 return -1;
 
-            if(sog.OwnerID.NotEqual(m_host.OwnerID))
+            if (sog.OwnerID.NotEqual(m_host.OwnerID))
             {
                 Vector3 pos = sog.AbsolutePosition;
-                if(!checkAllowObjectTPbyLandOwner(pos))
+                if (!checkAllowObjectTPbyLandOwner(pos))
                     return -1;
             }
 
@@ -4948,7 +5033,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             CheckThreatLevel();
 
             SceneObjectGroup sog = m_host.ParentGroup;
-            if(sog is null || sog.IsDeleted)
+            if (sog is null || sog.IsDeleted)
                 return -1;
             return sog.GetLinkNumber(name);
         }
@@ -4956,9 +5041,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         // rounds to the nearest number with provided number of decimal places
         public LSL_Float osRound(LSL_Float value, LSL_Integer ndigits)
         {
-            if(ndigits <= 0)
+            if (ndigits <= 0)
                 return Math.Round(value, MidpointRounding.AwayFromZero);
-            if(ndigits > 15)
+            if (ndigits > 15)
                 ndigits = 15;
             return Math.Round(value, ndigits, MidpointRounding.AwayFromZero);
         }
@@ -4976,12 +5061,12 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         // returns the angle between 2 vectors 0 to pi
         public LSL_Float osAngleBetween(LSL_Vector a, LSL_Vector b)
         {
-            double dot = LSL_Vector.Dot(a,b);
-            double mcross = LSL_Vector.Mag(LSL_Vector.Cross(a,b));
+            double dot = LSL_Vector.Dot(a, b);
+            double mcross = LSL_Vector.Mag(LSL_Vector.Cross(a, b));
             return Math.Atan2(mcross, dot);
         }
 
-       public void osAdjustSoundVolume(LSL_Integer linknum, LSL_Float volume)
+        public void osAdjustSoundVolume(LSL_Integer linknum, LSL_Float volume)
         {
             SceneObjectPart sop = GetSingleLinkPart(linknum);
             sop?.AdjustSoundGain(volume);
@@ -4990,7 +5075,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         public void osSetSoundRadius(LSL_Integer linknum, LSL_Float radius)
         {
             SceneObjectPart sop = GetSingleLinkPart(linknum);
-            if(sop is not null)
+            if (sop is not null)
                 sop.SoundRadius = radius;
         }
 
@@ -5000,7 +5085,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
 
             SceneObjectPart sop = GetSingleLinkPart(linknum);
-            if(sop is null)
+            if (sop is null)
                 return;
 
             UUID soundID = ScriptUtils.GetAssetIdFromKeyOrItemName(sop, m_host, sound, AssetType.Sound);
@@ -5017,7 +5102,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
 
             SceneObjectPart sop = GetSingleLinkPart(linknum);
-            if(sop is null)
+            if (sop is null)
                 return;
 
             UUID soundID = ScriptUtils.GetAssetIdFromKeyOrItemName(sop, m_host, sound, AssetType.Sound);
@@ -5033,7 +5118,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
 
             SceneObjectPart sop = GetSingleLinkPart(linknum);
-            if(sop is null)
+            if (sop is null)
                 return;
 
             UUID soundID = ScriptUtils.GetAssetIdFromKeyOrItemName(sop, m_host, sound, AssetType.Sound);
@@ -5049,7 +5134,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
 
             SceneObjectPart sop = GetSingleLinkPart(linknum);
-            if(sop is null)
+            if (sop is null)
                 return;
 
             UUID soundID = ScriptUtils.GetAssetIdFromKeyOrItemName(sop, m_host, sound, AssetType.Sound);
@@ -5063,7 +5148,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
 
             SceneObjectPart sop = GetSingleLinkPart(linknum);
-            if(sop is null)
+            if (sop is null)
                 return;
 
             UUID soundID = ScriptUtils.GetAssetIdFromKeyOrItemName(sop, m_host, sound, AssetType.Sound);
@@ -5077,7 +5162,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
 
             SceneObjectPart sop = GetSingleLinkPart(linknum);
-            if(sop is null)
+            if (sop is null)
                 return;
 
             UUID soundID = ScriptUtils.GetAssetIdFromKeyOrItemName(sop, m_host, sound, AssetType.Sound);
@@ -5085,14 +5170,14 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 m_SoundModule.SendSound(sop, soundID, volume, true, 0, false, false);
         }
 
-       public void osTriggerSoundLimited(LSL_Integer linknum, LSL_String sound, LSL_Float volume,
-                 LSL_Vector top_north_east, LSL_Vector bottom_south_west)
+        public void osTriggerSoundLimited(LSL_Integer linknum, LSL_String sound, LSL_Float volume,
+                  LSL_Vector top_north_east, LSL_Vector bottom_south_west)
         {
             if (m_SoundModule is null)
                 return;
 
             SceneObjectPart sop = GetSingleLinkPart(linknum);
-            if(sop is null)
+            if (sop is null)
                 return;
 
             UUID soundID = ScriptUtils.GetAssetIdFromKeyOrItemName(sop, m_host, sound, AssetType.Sound);
@@ -5108,9 +5193,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
             InitLSL();
             List<SceneObjectPart> sops = m_LSL_Api.GetLinkParts(linknum);
-            if(sops is null || sops.Count == 0)
+            if (sops is null || sops.Count == 0)
                 return;
-            for(int i = 0; i < sops.Count; ++i)
+            for (int i = 0; i < sops.Count; ++i)
                 m_SoundModule.StopSound(sops[i]);
         }
 
@@ -5120,7 +5205,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
 
             SceneObjectPart sop = GetSingleLinkPart(linknum);
-            if(sop is null)
+            if (sop is null)
                 return;
 
             UUID soundID = ScriptUtils.GetAssetIdFromKeyOrItemName(sop, m_host, sound, AssetType.Sound);
@@ -5152,10 +5237,10 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                     return m_host;
 
                 default:
-                    if(linkType < 0)
+                    if (linkType < 0)
                         return null;
 
-                return m_host.ParentGroup.GetLinkNumPart(linkType);
+                    return m_host.ParentGroup.GetLinkNumPart(linkType);
             }
         }
 
@@ -5196,7 +5281,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             if (!World.Permissions.IsGod(m_host.OwnerID))
             {
                 ScenePresence sp = World.GetScenePresence(key);
-                if(sp is null)
+                if (sp is null)
                     return LSL_String.Empty;
             }
 
@@ -5227,7 +5312,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return LSL_String.Empty;
             if (offset <= 0)
             {
-                if(length == src.Length)
+                if (length == src.Length)
                     return src;
                 offset = 0;
             }
@@ -5511,7 +5596,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             if (UUID.TryParse(itemId, out UUID itemID))
             {
                 SceneObjectPart part = GetSingleLinkPart(linkNumber);
-                if(part == null)
+                if (part == null)
                     return LSL_String.Empty;
 
                 item = part.Inventory.GetInventoryItem(itemID);
@@ -5531,7 +5616,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         public LSL_String osGetLinkInventoryDesc(LSL_Integer linkNumber, LSL_String itemNameorid)
         {
             SceneObjectPart part = GetSingleLinkPart(linkNumber);
-            if(part == null)
+            if (part == null)
                 return LSL_String.Empty;
 
             TaskInventoryItem item = UUID.TryParse(itemNameorid, out UUID itemID) ?
@@ -5544,9 +5629,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         public LSL_Key osGetLinkInventoryKey(LSL_Integer linkNumber, LSL_String name, LSL_Integer type)
         {
             SceneObjectPart part = GetSingleLinkPart(linkNumber);
-            if(part == null)
+            if (part == null)
                 return LSL_String.NullKey;
-            
+
             TaskInventoryItem item = part.Inventory.GetInventoryItem(name, type);
             if (item is null)
                 return LSL_String.NullKey;
@@ -5564,9 +5649,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         public LSL_List osGetLinkInventoryKeys(LSL_Integer linkNumber, LSL_Integer type)
         {
             LSL_List ret = new();
-            
+
             SceneObjectPart part = GetSingleLinkPart(linkNumber);
-            if(part == null)
+            if (part == null)
                 return ret;
 
             part.TaskInventory.LockItemsForRead(true);
@@ -5586,9 +5671,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         public LSL_Key osGetLinkInventoryItemKey(LSL_Integer linkNumber, LSL_String name)
         {
             SceneObjectPart part = GetSingleLinkPart(linkNumber);
-            if(part == null)
+            if (part == null)
                 return LSL_String.NullKey;
-            
+
             TaskInventoryItem item = part.Inventory.GetInventoryItem(name);
             if (item is null)
                 return LSL_String.NullKey;
@@ -5624,9 +5709,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         public LSL_List osGetLinkInventoryItemKeys(LSL_Integer linkNumber, LSL_Integer type)
         {
             LSL_List ret = new();
-            
+
             SceneObjectPart part = GetSingleLinkPart(linkNumber);
-            if(part == null)
+            if (part == null)
                 return ret;
 
             part.TaskInventory.LockItemsForRead(true);
@@ -5663,7 +5748,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             LSL_List ret = new();
 
             SceneObjectPart part = GetSingleLinkPart(linkNumber);
-            if(part == null)
+            if (part == null)
                 return ret;
 
             part.TaskInventory.LockItemsForRead(true);
@@ -5681,7 +5766,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         {
 
             SceneObjectPart part = GetSingleLinkPart(linkNumber);
-            if(part == null)
+            if (part == null)
                 return;
 
             TaskInventoryItem item = part.Inventory.GetInventoryItem(name);
@@ -5707,7 +5792,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
 
             SceneObjectPart part = GetSingleLinkPart(linkNumber);
-            if(part == null)
+            if (part == null)
                 return;
 
             TaskInventoryItem item = part.Inventory.GetInventoryItem(inventory);
@@ -5721,14 +5806,14 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             }
             else
             {
-                if(!World.TryGetScenePresence(destId, out ScenePresence _))
+                if (!World.TryGetScenePresence(destId, out ScenePresence _))
                 {
                     UserAccount account = World.UserAccountService.GetUserAccount(World.RegionInfo.ScopeID, destId);
 
                     if (account == null)
                     {
                         GridUserInfo info = World.GridUserService.GetGridUserInfo(destId.ToString());
-                        if(info == null || info.Online == false)
+                        if (info == null || info.Online == false)
                             return;
                     }
                 }
@@ -5747,15 +5832,15 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 GridInstantMessage msg = new GridInstantMessage(World,
                         m_host.OwnerID, m_host.Name, destId,
                         (byte)InstantMessageDialog.TaskInventoryOffered,
-                        m_host.OwnerID.Equals(m_host.GroupID), "'"+item.Name+"'. ("+m_host.Name+" is located at "+
-                        World.RegionInfo.RegionName + " "+ m_host.AbsolutePosition.ToString() + ")",
+                        m_host.OwnerID.Equals(m_host.GroupID), "'" + item.Name + "'. (" + m_host.Name + " is located at " +
+                        World.RegionInfo.RegionName + " " + m_host.AbsolutePosition.ToString() + ")",
                         agentItem.ID, true, m_host.AbsolutePosition,
                         bucket, true);
 
                 if (World.TryGetScenePresence(destId, out ScenePresence sp))
                     sp.ControllingClient.SendInstantMessage(msg);
                 else
-                    m_TransferModule?.SendInstantMessage(msg, delegate(bool success) {});
+                    m_TransferModule?.SendInstantMessage(msg, delegate (bool success) { });
 
                 //This delay should only occur when giving inventory to avatars.
                 ScriptSleep(3000);
@@ -5768,9 +5853,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return;
 
             SceneObjectPart part = GetSingleLinkPart(linkNumber);
-            if(part == null)
+            if (part == null)
                 return;
-            
+
             if (!UUID.TryParse(destination, out UUID destID) || destID.IsZero())
                 return;
 
@@ -5795,7 +5880,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 TaskInventoryItem taskItem = (UUID.TryParse(rawItemString, out UUID itemID)) ?
                     part.Inventory.GetInventoryItem(itemID) : part.Inventory.GetInventoryItem(rawItemString);
 
-                if(taskItem is null)
+                if (taskItem is null)
                     continue;
 
                 if ((taskItem.CurrentPermissions & (uint)PermissionMask.Copy) == 0)
@@ -5803,12 +5888,12 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
                 if (destSop is not null)
                 {
-                    if(!World.Permissions.CanDoObjectInvToObjectInv(taskItem, m_host, destSop))
+                    if (!World.Permissions.CanDoObjectInvToObjectInv(taskItem, m_host, destSop))
                         continue;
                 }
                 else
                 {
-                    if(isNotOwner)
+                    if (isNotOwner)
                     {
                         if ((taskItem.CurrentPermissions & (uint)PermissionMask.Transfer) == 0)
                             continue;
@@ -5848,9 +5933,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
                 GridInstantMessage msg = new(World, m_host.OwnerID, m_host.Name, destID,
                         (byte)InstantMessageDialog.TaskInventoryOffered,
-                        m_host.OwnerID.Equals(m_host.GroupID), string.Format("'{0}'", category), folderID, false, pos,bucket, false);
+                        m_host.OwnerID.Equals(m_host.GroupID), string.Format("'{0}'", category), folderID, false, pos, bucket, false);
 
-                m_TransferModule.SendInstantMessage(msg, delegate(bool success) {});
+                m_TransferModule.SendInstantMessage(msg, delegate (bool success) { });
             }
 
             ScriptSleep(3000);
@@ -5867,7 +5952,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
         // returns PST or PDT wall clock
         public LSL_Float osGetPSTWallclock()
         {
-            if(PSTTimeZone is null)
+            if (PSTTimeZone is null)
                 return DateTime.Now.TimeOfDay.TotalSeconds;
 
             DateTime time = TimeZoneInfo.ConvertTime(DateTime.UtcNow, PSTTimeZone);
@@ -5876,9 +5961,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
         public LSL_Rotation osSlerp(LSL_Rotation a, LSL_Rotation b, LSL_Float amount)
         {
-            if(amount < 0)
-                amount= 0;
-            else if(amount > 1.0)
+            if (amount < 0)
+                amount = 0;
+            else if (amount > 1.0)
                 amount = 1.0;
             a.Normalize();
             b.Normalize();
@@ -5901,10 +5986,10 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             UUID me = m_item.ItemID;
             List<TaskInventoryItem> scripts = new();
 
-            if(linkset != 0)
+            if (linkset != 0)
             {
                 SceneObjectGroup sog = m_host.ParentGroup;
-                if(sog.inTransit || sog.IsDeleted)
+                if (sog.inTransit || sog.IsDeleted)
                     return;
 
                 SceneObjectPart[] parts = sog.Parts;
@@ -5916,9 +6001,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             else
                 scripts.AddRange(m_host.Inventory.GetInventoryItems(InventoryType.LSL));
 
-            foreach(TaskInventoryItem script in scripts)
+            foreach (TaskInventoryItem script in scripts)
             {
-                if(script.ItemID.Equals(me))
+                if (script.ItemID.Equals(me))
                     continue;
                 m_ScriptEngine.ResetScript(script.ItemID);
             }
@@ -5957,7 +6042,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             if (fv > 128f)
                 fv = 128f;
 
-            if(m_host.SitActiveRange != fv)
+            if (m_host.SitActiveRange != fv)
             {
                 m_host.SitActiveRange = fv;
                 m_host.ParentGroup.HasGroupChanged = true;
@@ -5974,10 +6059,10 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             bool changed = false;
 
             List<SceneObjectPart> parts = m_LSL_Api.GetLinkParts(linkNumber);
-            for(int i = 0; i < parts.Count; ++i)
+            for (int i = 0; i < parts.Count; ++i)
             {
                 SceneObjectPart sop = parts[i];
-                if(sop.SitActiveRange != fv)
+                if (sop.SitActiveRange != fv)
                 {
                     sop.SitActiveRange = fv;
                     changed = true;
@@ -6012,7 +6097,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             // todo add limits ?
             Vector3 old = m_host.StandOffset;
             m_host.StandOffset = v;
-            if(!old.ApproxEquals(v))
+            if (!old.ApproxEquals(v))
                 m_host.ParentGroup.HasGroupChanged = true;
         }
 
@@ -6066,17 +6151,17 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
         public LSL_Integer osReplaceAgentEnvironment(LSL_Key agentkey, LSL_Integer transition, LSL_String daycycle)
         {
-            if(!string.IsNullOrEmpty(CheckThreatLevelTest(ThreatLevel.Moderate, "osReplaceAgentEnvironment")))
+            if (!string.IsNullOrEmpty(CheckThreatLevelTest(ThreatLevel.Moderate, "osReplaceAgentEnvironment")))
                 return -2;
 
             if (!UUID.TryParse(agentkey, out UUID agentid))
                 return -4;
 
             ScenePresence sp = World.GetScenePresence(agentid);
-            if(sp is null || sp.IsChildAgent || sp.IsNPC || sp.IsInTransit)
+            if (sp is null || sp.IsChildAgent || sp.IsNPC || sp.IsInTransit)
                 return -4;
 
-            if(string.IsNullOrEmpty(daycycle) || daycycle == ScriptBaseClass.NULL_KEY)
+            if (string.IsNullOrEmpty(daycycle) || daycycle == ScriptBaseClass.NULL_KEY)
             {
                 sp.Environment = null;
                 m_envModule.WindlightRefreshForced(sp, transition);
@@ -6088,14 +6173,14 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return -3;
 
             AssetBase asset = World.AssetService.Get(envID.ToString());
-            if(asset is null || asset.Type != (byte)AssetType.Settings)
+            if (asset is null || asset.Type != (byte)AssetType.Settings)
                 return -3;
             // cant use stupid broken asset flags for subtype
             try
             {
                 OSD oenv = OSDParser.Deserialize(asset.Data);
                 ViewerEnvironment VEnv = m_envModule.GetRegionEnvironment().Clone();
-                if(!VEnv.CycleFromOSD(oenv))
+                if (!VEnv.CycleFromOSD(oenv))
                     return -3;
                 sp.Environment = VEnv;
                 m_envModule.WindlightRefreshForced(sp, transition);
@@ -6206,7 +6291,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             {
                 int lo = VEnv.DayLength;
                 if (dayoffset <= 0)
-                    dayoffset+= 24;
+                    dayoffset += 24;
                 VEnv.DayOffset = (int)(dayoffset * 3600f);
                 changed |= lo != VEnv.DayOffset;
             }
@@ -6227,13 +6312,13 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 VEnv.Altitudes[2] = (float)altitude3;
                 needSort = true;
             }
-            if(needSort)
+            if (needSort)
             {
                 VEnv.SortAltitudes();
                 changed = true;
             }
 
-            if(changed)
+            if (changed)
             {
                 m_envModule.StoreOnRegion(VEnv);
                 m_envModule.WindlightRefresh(transition);
@@ -6299,19 +6384,19 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 return -2;
 
             ScenePresence npcSP = World.GetScenePresence(npc);
-            if((npcSP is null) || !npcSP.IsNPC)
+            if ((npcSP is null) || !npcSP.IsNPC)
                 return -3;
 
             if (!UUID.TryParse(objkey, out UUID obj))
                 return -4;
 
-            if(!obj.IsZero())
+            if (!obj.IsZero())
             {
                 ScenePresence objSP = World.GetScenePresence(obj);
-                if(objSP == null)
+                if (objSP == null)
                 {
                     SceneObjectPart objSOP = World.GetSceneObjectPart(obj);
-                    if(objSOP == null)
+                    if (objSOP == null)
                         return -5;
                 }
             }
@@ -6339,10 +6424,10 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             World.ForEachScenePresence(
                  sp =>
                  {
-                    if(!sp.IsNPC && !sp.IsDeleted)
-                    {
-                        sp.ControllingClient.SendViewerEffect(effectblock);
-                    }
+                     if (!sp.IsNPC && !sp.IsDeleted)
+                     {
+                         sp.ControllingClient.SendViewerEffect(effectblock);
+                     }
                  });
 
             return 0;
@@ -6407,9 +6492,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             foreach (ILandObject obj in parcels)
             {
                 // some sanity check
-                if(obj.GlobalID.IsZero())
+                if (obj.GlobalID.IsZero())
                     continue;
-                if(obj.LandData is null || obj.LandData.Area == 0)
+                if (obj.LandData is null || obj.LandData.Area == 0)
                     continue;
                 ret.Add(new LSL_Key(obj.GlobalID.ToString()));
             }
@@ -6440,7 +6525,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
             if (start < 0)
                 start += src.Length;
-            if (end   < 0)
+            if (end < 0)
                 end += src.Length;
 
             //  Out of bounds indices are OK, just trim them
@@ -6461,16 +6546,16 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             {
                 if (start <= end)
                 {
-                   si[0] = start;
-                   ei[0] = end;
+                    si[0] = start;
+                    ei[0] = end;
                 }
                 else
                 {
-                   si[1] = start;
-                   ei[1] = src.Length;
-                   si[0] = 0;
-                   ei[0] = end;
-                   twopass = true;
+                    si[1] = start;
+                    ei[1] = src.Length;
+                    si[0] = 0;
+                    ei[0] = end;
+                    twopass = true;
                 }
 
                 //  The scan always starts from the beginning of the
@@ -6484,9 +6569,9 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
                 {
                     for (int i = 0; i < src.Length; i += stride)
                     {
-                        if (i<=ei[0] && i>=si[0])
+                        if (i <= ei[0] && i >= si[0])
                             result.Add(src.Data[i]);
-                        if (twopass && i>=si[1] && i<=ei[1])
+                        if (twopass && i >= si[1] && i <= ei[1])
                             result.Add(src.Data[i]);
                     }
                 }
@@ -6503,7 +6588,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
             }
             else
             {
-                if (start%stride == 0)
+                if (start % stride == 0)
                 {
                     result.Add(src.Data[start]);
                 }
@@ -6540,11 +6625,11 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
         public LSL_String osAESEncrypt(string secret, string plainText)
         {
-            if(string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(plainText))
+            if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(plainText))
                 return LSL_String.Empty;
 
             ReadOnlySpan<char> ret = Util.AESEncrypt(secret.AsSpan(), plainText.AsSpan());
-            if(ret.Length == 0)
+            if (ret.Length == 0)
             {
                 OSSLShoutError("osAESEncrypt: Failed to encrypt!");
                 return LSL_String.Empty;
@@ -6554,11 +6639,11 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
         public LSL_String osAESDecrypt(string secret, string encryptedText)
         {
-            if(string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(encryptedText))
+            if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(encryptedText))
                 return LSL_String.Empty;
 
             ReadOnlySpan<char> ret = Util.AESDecrypt(secret.AsSpan(), encryptedText.AsSpan());
-            if(ret.Length == 0)
+            if (ret.Length == 0)
             {
                 OSSLShoutError("osAESDecrypt: Failed to Decrypt!");
                 return LSL_String.Empty;
@@ -6568,7 +6653,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
         public LSL_String osAESEncryptTo(string secret, string plainText, string ivString)
         {
-            if(string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(plainText) || string.IsNullOrEmpty(ivString))
+            if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(plainText) || string.IsNullOrEmpty(ivString))
                 return LSL_String.Empty;
 
             ReadOnlySpan<char> ret = Util.AESEncryptTo(secret.AsSpan(), plainText.AsSpan(), ivString.AsSpan());
@@ -6582,7 +6667,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api
 
         public LSL_String osAESDecryptFrom(string secret, string encryptedText, string ivString)
         {
-            if(string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(encryptedText) || string.IsNullOrEmpty(ivString))
+            if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(encryptedText) || string.IsNullOrEmpty(ivString))
                 return LSL_String.Empty;
 
             ReadOnlySpan<char> ret = Util.AESDecryptFrom(secret.AsSpan(), encryptedText.AsSpan(), ivString.AsSpan());
