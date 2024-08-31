@@ -40,6 +40,7 @@ using LSL_Integer = OpenSim.Region.ScriptEngine.Shared.LSL_Types.LSLInteger;
 using LSL_Float = OpenSim.Region.ScriptEngine.Shared.LSL_Types.LSLFloat;
 using LSL_Rotation = OpenSim.Region.ScriptEngine.Shared.LSL_Types.Quaternion;
 using LSL_Key = OpenSim.Region.ScriptEngine.Shared.LSL_Types.LSLString;
+using OpenMetaverse;
 
 
 namespace OpenSim.Region.ScriptEngine.Shared.Api.Interfaces
@@ -125,6 +126,12 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api.Interfaces
                                            int timer, int alpha);
         string osSetDynamicTextureURLBlendFace(string dynamicID, string contentType, string url, string extraParams,
                                            bool blend, int disp, int timer, int alpha, int face);
+        string osSetDynamicTextureUUID(string dynamicID, string contentType, UUID textureUUID, string extraParams, int timer);
+        string osSetDynamicTextureUUIDBlend(string dynamicID, string contentType, UUID textureUUID, string extraParams,
+                                            int timer, int alpha);
+        string osSetDynamicTextureUUIDBlendFace(string dynamicID, string contentType, UUID textureUUID, string extraParams,
+                                                bool blend, int disp, int timer, int alpha, int face);
+
         string osSetDynamicTextureData(string dynamicID, string contentType, string data, string extraParams, int timer);
         string osSetDynamicTextureDataFace(string dynamicID, string contentType, string data, string extraParams, int timer, int face);
         string osSetDynamicTextureDataBlend(string dynamicID, string contentType, string data, string extraParams,
