@@ -277,7 +277,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api.Interfaces
         string osGetPhysicsEngineType();
         string osGetPhysicsEngineName();
 
-        void osMessageObject(key objectUUID,string message);
+        void osMessageObject(key objectUUID, string message);
 
         void osMakeNotecard(string notecardName, LSL_String contents);
         void osMakeNotecard(string notecardName, LSL_List contents);
@@ -343,14 +343,14 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api.Interfaces
         /// <returns>TRUE if the key belongs to an npc in the scene.  FALSE otherwise.</returns>
         LSL_Integer osIsNpc(LSL_Key npc);
 
-        key     osNpcCreate(string user, string name, vector position, string notecard);
-        key     osNpcCreate(string user, string name, vector position, string notecard, int options);
+        key osNpcCreate(string user, string name, vector position, string notecard);
+        key osNpcCreate(string user, string name, vector position, string notecard, int options);
         LSL_Key osNpcSaveAppearance(key npc, LSL_String notecard);
         LSL_Key osNpcSaveAppearance(key npc, LSL_String notecard, LSL_Integer includeHuds);
-        void    osNpcLoadAppearance(key npc, string notecard);
-        vector  osNpcGetPos(key npc);
-        void    osNpcMoveTo(key npc, vector position);
-        void    osNpcMoveToTarget(key npc, vector target, int options);
+        void osNpcLoadAppearance(key npc, string notecard);
+        vector osNpcGetPos(key npc);
+        void osNpcMoveTo(key npc, vector position);
+        void osNpcMoveToTarget(key npc, vector target, int options);
 
         /// <summary>
         /// Get the owner of the NPC
@@ -359,7 +359,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api.Interfaces
         /// <returns>
         /// The owner of the NPC for an owned NPC.  The NPC's agent id for an unowned NPC.  UUID.Zero if the key is not an npc.
         /// </returns>
-        LSL_Key  osNpcGetOwner(key npc);
+        LSL_Key osNpcGetOwner(key npc);
 
         rotation osNpcGetRot(key npc);
 
@@ -390,33 +390,33 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api.Interfaces
         LSL_List osGetRegionStats();
         vector osGetRegionSize();
 
-         int osGetSimulatorMemory();
-         int osGetSimulatorMemoryKB();
+        int osGetSimulatorMemory();
+        int osGetSimulatorMemoryKB();
         void osKickAvatar(string FirstName, string SurName, string alert);
         void osKickAvatar(LSL_Key agentId, string alert);
         void osSetSpeed(string UUID, LSL_Float SpeedModifier);
         void osSetOwnerSpeed(LSL_Float SpeedModifier);
-   LSL_Float osGetHealth(key agentId);
+        LSL_Float osGetHealth(key agentId);
         void osCauseHealing(key agentId, LSL_Float healing);
         void osSetHealth(key agentId, LSL_Float health);
         void osSetHealRate(key agentId, LSL_Float health);
-   LSL_Float osGetHealRate(key agentId);
+        LSL_Float osGetHealRate(key agentId);
         void osCauseDamage(key avatar, LSL_Float damage);
         void osForceOtherSit(string avatar);
         void osForceOtherSit(string avatar, string target);
-    LSL_List osGetPrimitiveParams(LSL_Key prim, LSL_List rules);
+        LSL_List osGetPrimitiveParams(LSL_Key prim, LSL_List rules);
         void osSetPrimitiveParams(LSL_Key prim, LSL_List rules);
         void osSetProjectionParams(LSL_Integer projection, LSL_Key texture, LSL_Float fov, LSL_Float focus, LSL_Float amb);
         void osSetProjectionParams(LSL_Key prim, LSL_Integer projection, LSL_Key texture, LSL_Float fov, LSL_Float focus, LSL_Float amb);
         void osSetProjectionParams(LSL_Integer linknumber, LSL_Integer projection, LSL_Key texture, LSL_Float fov, LSL_Float focus, LSL_Float amb);
 
-    LSL_List osGetAvatarList();
-    LSL_List osGetNPCList();
+        LSL_List osGetAvatarList();
+        LSL_List osGetNPCList();
 
-  LSL_String osUnixTimeToTimestamp(LSL_Integer time);
+        LSL_String osUnixTimeToTimestamp(LSL_Integer time);
 
- LSL_Integer osInviteToGroup(LSL_Key agentId);
- LSL_Integer osEjectFromGroup(LSL_Key agentId);
+        LSL_Integer osInviteToGroup(LSL_Key agentId);
+        LSL_Integer osEjectFromGroup(LSL_Key agentId);
 
         void osSetTerrainTexture(int level, LSL_Key texture);
         void osSetTerrainTextureHeight(int corner, double low, double high);
@@ -426,7 +426,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api.Interfaces
         /// </summary>
         /// <param name="thing"></param>
         /// <returns>1 if thing is a valid UUID, 0 otherwise</returns>
- LSL_Integer osIsUUID(string thing);
+        LSL_Integer osIsUUID(string thing);
 
         /// <summary>
         /// Wraps to Math.Min()
@@ -434,7 +434,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api.Interfaces
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
- LSL_Float osMin(double a, double b);
+        LSL_Float osMin(double a, double b);
 
         /// <summary>
         /// Wraps to Math.max()
@@ -442,7 +442,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api.Interfaces
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
- LSL_Float osMax(double a, double b);
+        LSL_Float osMax(double a, double b);
 
         /// <summary>
         /// Get the key of the object that rezzed this object.
@@ -512,10 +512,10 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api.Interfaces
 
         LSL_List osGetInertiaData();
         void osClearInertia();
-        void osSetInertia(LSL_Float mass, vector centerOfMass, vector principalInertiaScaled,  rotation rot);
+        void osSetInertia(LSL_Float mass, vector centerOfMass, vector principalInertiaScaled, rotation rot);
         void osSetInertiaAsBox(LSL_Float mass, vector boxSize, vector centerOfMass, rotation rot);
-        void osSetInertiaAsSphere(LSL_Float mass,  LSL_Float radius, vector centerOfMass);
-        void osSetInertiaAsCylinder(LSL_Float mass,  LSL_Float radius, LSL_Float length, vector centerOfMass,rotation lslrot);
+        void osSetInertiaAsSphere(LSL_Float mass, LSL_Float radius, vector centerOfMass);
+        void osSetInertiaAsCylinder(LSL_Float mass, LSL_Float radius, LSL_Float length, vector centerOfMass, rotation lslrot);
 
         LSL_Integer osTeleportObject(LSL_Key objectUUID, vector targetPos, rotation targetrotation, LSL_Integer flags);
         LSL_Integer osGetLinkNumber(LSL_String name);
@@ -544,60 +544,60 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api.Interfaces
 
         LSL_String osStringSubString(LSL_String src, LSL_Integer start);
         LSL_String osStringSubString(LSL_String src, LSL_Integer start, LSL_Integer length);
-       LSL_Integer osStringStartsWith(LSL_String src, LSL_String value, LSL_Integer ignorecase);
-       LSL_Integer osStringEndsWith(LSL_String src, LSL_String value, LSL_Integer ignorecase);
-       LSL_Integer osStringIndexOf(LSL_String src, LSL_String value, LSL_Integer ignorecase);
-       LSL_Integer osStringIndexOf(LSL_String src, LSL_String value, LSL_Integer start, LSL_Integer count, LSL_Integer ignorecase);
-       LSL_Integer osStringLastIndexOf(LSL_String src, LSL_String value, LSL_Integer ignorecase);
-       LSL_Integer osStringLastIndexOf(LSL_String src, LSL_String value, LSL_Integer start, LSL_Integer count, LSL_Integer ignorecase);
+        LSL_Integer osStringStartsWith(LSL_String src, LSL_String value, LSL_Integer ignorecase);
+        LSL_Integer osStringEndsWith(LSL_String src, LSL_String value, LSL_Integer ignorecase);
+        LSL_Integer osStringIndexOf(LSL_String src, LSL_String value, LSL_Integer ignorecase);
+        LSL_Integer osStringIndexOf(LSL_String src, LSL_String value, LSL_Integer start, LSL_Integer count, LSL_Integer ignorecase);
+        LSL_Integer osStringLastIndexOf(LSL_String src, LSL_String value, LSL_Integer ignorecase);
+        LSL_Integer osStringLastIndexOf(LSL_String src, LSL_String value, LSL_Integer start, LSL_Integer count, LSL_Integer ignorecase);
         LSL_String osStringRemove(LSL_String src, LSL_Integer start, LSL_Integer count);
         LSL_String osStringReplace(LSL_String src, LSL_String oldvalue, LSL_String newvalue);
 
-       LSL_Integer osApproxEquals(LSL_Float a, LSL_Float b);
-       LSL_Integer osApproxEquals(LSL_Float a, LSL_Float b, LSL_Float margin);
-       LSL_Integer osApproxEquals(vector va, vector vb);
-       LSL_Integer osApproxEquals(vector va, vector vb, LSL_Float margin);
-       LSL_Integer osApproxEquals(rotation ra, rotation rb);
-       LSL_Integer osApproxEquals(rotation ra, rotation rb, LSL_Float margin);
+        LSL_Integer osApproxEquals(LSL_Float a, LSL_Float b);
+        LSL_Integer osApproxEquals(LSL_Float a, LSL_Float b, LSL_Float margin);
+        LSL_Integer osApproxEquals(vector va, vector vb);
+        LSL_Integer osApproxEquals(vector va, vector vb, LSL_Float margin);
+        LSL_Integer osApproxEquals(rotation ra, rotation rb);
+        LSL_Integer osApproxEquals(rotation ra, rotation rb, LSL_Float margin);
         LSL_Key osGetInventoryLastOwner(LSL_String itemNameOrId);
         LSL_Key osGetInventoryItemKey(LSL_String name);
         LSL_Key osGetLinkInventoryKey(LSL_Integer linkNumber, LSL_String name, LSL_Integer type);
         LSL_List osGetLinkInventoryKeys(LSL_Integer linkNumber, LSL_Integer type);
         LSL_Key osGetLinkInventoryItemKey(LSL_Integer linkNumber, LSL_String name);
-     LSL_String osGetInventoryName(LSL_Key itemId);
-     LSL_String osGetLinkInventoryName(LSL_Integer linkNumber, LSL_Key itemId);
-     LSL_String osGetInventoryDesc(LSL_String itemNameOrId);
-     LSL_String osGetLinkInventoryDesc(LSL_Integer linkNumber, LSL_String itemNameorid);
-       LSL_List osGetInventoryItemKeys(LSL_Integer type);
-       LSL_List osGetLinkInventoryItemKeys(LSL_Integer linkNumber, LSL_Integer type);
-       LSL_List osGetInventoryNames(LSL_Integer type);
-       LSL_List osGetLinkInventoryNames(LSL_Integer linkNumber, LSL_Integer type);
-           void osRemoveLinkInventory(LSL_Integer linkNumber, LSL_String name);
-           void osGiveLinkInventory(LSL_Integer linkNumber, LSL_Key destination, LSL_String inventory);
-           void osGiveLinkInventoryList(LSL_Integer linkNumber, LSL_Key destination, LSL_String category, LSL_List inventory);
+        LSL_String osGetInventoryName(LSL_Key itemId);
+        LSL_String osGetLinkInventoryName(LSL_Integer linkNumber, LSL_Key itemId);
+        LSL_String osGetInventoryDesc(LSL_String itemNameOrId);
+        LSL_String osGetLinkInventoryDesc(LSL_Integer linkNumber, LSL_String itemNameorid);
+        LSL_List osGetInventoryItemKeys(LSL_Integer type);
+        LSL_List osGetLinkInventoryItemKeys(LSL_Integer linkNumber, LSL_Integer type);
+        LSL_List osGetInventoryNames(LSL_Integer type);
+        LSL_List osGetLinkInventoryNames(LSL_Integer linkNumber, LSL_Integer type);
+        void osRemoveLinkInventory(LSL_Integer linkNumber, LSL_String name);
+        void osGiveLinkInventory(LSL_Integer linkNumber, LSL_Key destination, LSL_String inventory);
+        void osGiveLinkInventoryList(LSL_Integer linkNumber, LSL_Key destination, LSL_String category, LSL_List inventory);
         LSL_Key osGetLastChangedEventKey();
-      LSL_Float osGetPSTWallclock();
-   LSL_Rotation osSlerp(LSL_Rotation a, LSL_Rotation b, LSL_Float amount);
-         vector osSlerp(vector a, vector b, LSL_Float amount);
+        LSL_Float osGetPSTWallclock();
+        LSL_Rotation osSlerp(LSL_Rotation a, LSL_Rotation b, LSL_Float amount);
+        vector osSlerp(vector a, vector b, LSL_Float amount);
 
-           void osResetAllScripts(LSL_Integer AllLinkset);
-    LSL_Integer osIsNotValidNumber(LSL_Float v);
+        void osResetAllScripts(LSL_Integer AllLinkset);
+        LSL_Integer osIsNotValidNumber(LSL_Float v);
 
-           void osSetSitActiveRange(LSL_Float v);
-           void osSetLinkSitActiveRange(LSL_Integer linkNumber, LSL_Float v);
-      LSL_Float osGetSitActiveRange();
-      LSL_Float osGetLinkSitActiveRange(LSL_Integer linkNumber);
-         vector osGetSitTargetPos();
-       rotation osGetSitTargetRot();
-           void osSetStandTarget(vector v);
-           void osSetLinkStandTarget(LSL_Integer linkNumber, vector v);
-         vector osGetStandTarget();
-         vector osGetLinkStandTarget(LSL_Integer linkNumber);
-    LSL_Integer osClearObjectAnimations();
+        void osSetSitActiveRange(LSL_Float v);
+        void osSetLinkSitActiveRange(LSL_Integer linkNumber, LSL_Float v);
+        LSL_Float osGetSitActiveRange();
+        LSL_Float osGetLinkSitActiveRange(LSL_Integer linkNumber);
+        vector osGetSitTargetPos();
+        rotation osGetSitTargetRot();
+        void osSetStandTarget(vector v);
+        void osSetLinkStandTarget(LSL_Integer linkNumber, vector v);
+        vector osGetStandTarget();
+        vector osGetLinkStandTarget(LSL_Integer linkNumber);
+        LSL_Integer osClearObjectAnimations();
 
-        LSL_Float  osGetApparentTime();
+        LSL_Float osGetApparentTime();
         LSL_String osGetApparentTimeString(LSL_Integer format24);
-        LSL_Float  osGetApparentRegionTime();
+        LSL_Float osGetApparentRegionTime();
         LSL_String osGetApparentRegionTimeString(LSL_Integer format24);
 
         LSL_Integer osReplaceAgentEnvironment(LSL_Key agentkey, LSL_Integer transition, LSL_String daycycle);
@@ -627,7 +627,7 @@ namespace OpenSim.Region.ScriptEngine.Shared.Api.Interfaces
         LSL_String osAESEncryptTo(string secret, string plainText, string ivString);
         LSL_String osAESDecrypt(string secret, string encryptedText);
         LSL_String osAESDecryptFrom(string secret, string encryptedText, string ivString);
-            vector osGetLinkColor(LSL_Integer linknum, LSL_Integer face);
-            vector osTemperature2sRGB(LSL_Float dtemp);
+        vector osGetLinkColor(LSL_Integer linknum, LSL_Integer face);
+        vector osTemperature2sRGB(LSL_Float dtemp);
     }
 }
