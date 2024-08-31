@@ -1,4 +1,7 @@
-AddDynamicTextureUUID
+    osSetDynamicTextureUUID
+    osSetDynamicTextureUUIDBlend
+    osSetDynamicTextureUUIDBlendFace
+
 
 
 Welcome to OpenSimulator (OpenSim for short)!
