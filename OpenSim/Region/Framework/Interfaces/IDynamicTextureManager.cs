@@ -28,6 +28,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+
 using OpenMetaverse;
 
 namespace OpenSim.Region.Framework.Interfaces
@@ -36,12 +37,6 @@ namespace OpenSim.Region.Framework.Interfaces
     {
         void RegisterRender(string handleType, IDynamicTextureRender render);
 
-        /// <summary>
-        /// Used by IDynamicTextureRender implementations to return renders
-        /// </summary>
-        /// <param name='id'></param>
-        /// <param name='data'></param>
-        /// <param name='isReuseable'></param>
         void ReturnData(UUID id, IDynamicTexture texture);
 
         UUID AddDynamicTextureURL(UUID simID, UUID primID, string contentType, string url, string extraParams);
@@ -50,60 +45,18 @@ namespace OpenSim.Region.Framework.Interfaces
         UUID AddDynamicTextureURL(UUID simID, UUID primID, string contentType, string url, string extraParams,
                                 bool SetBlending, int disp, byte AlphaValue, int face);
 
+        UUID AddDynamicTextureUUID(UUID simID, UUID primID, string contentType, UUID textureUUID, string extraParams);
+        UUID AddDynamicTextureUUID(UUID simID, UUID primID, string contentType, UUID textureUUID, string extraParams, bool SetBlending, byte AlphaValue);
+        UUID AddDynamicTextureUUID(UUID simID, UUID primID, string contentType, UUID textureUUID, string extraParams, bool SetBlending, int disp, byte AlphaValue, int face);
+
+
         UUID AddDynamicTextureData(UUID simID, UUID primID, string contentType, string data, string extraParams);
 
-        /// Apply a dynamically generated texture to all sides of the given prim.  The texture is not persisted to the
-        /// asset service.
-        /// </summary>
-        /// <param name="simID">The simulator in which the texture is being generated</param>
-        /// <param name="primID">The prim to which to apply the texture.</param>
-        /// <param name="contentType">The content type to create.  Current choices are "vector" to create a vector
-        /// based texture or "image" to create a texture from an image at a particular URL</param>
-        /// <param name="data">The data for the generator</param>
-        /// <param name="extraParams">Parameters for the generator that don't form part of the main data.</param>
-        /// <param name="SetBlending">
-        /// If true, the newly generated texture is blended with the appropriate existing ones on the prim
-        /// </param>
-        /// <param name="AlphaValue">
-        /// The alpha value of the generated texture.
-        /// </param>
-        /// <returns>
-        /// The UUID of the texture updater, not the texture UUID.  If you need the texture UUID then you will need
-        /// to obtain it directly from the SceneObjectPart.  For instance, if ALL_SIDES is set then this texture
-        /// can be obtained as SceneObjectPart.Shape.Textures.DefaultTexture.TextureID
-        /// </returns>
+
         UUID AddDynamicTextureData(UUID simID, UUID primID, string contentType, string data, string extraParams,
                                     bool SetBlending, byte AlphaValue);
 
-        /// <summary>
-        /// Apply a dynamically generated texture to the given prim.
-        /// </summary>
-        /// <param name="simID">The simulator in which the texture is being generated</param>
-        /// <param name="primID">The prim to which to apply the texture.</param>
-        /// <param name="contentType">The content type to create.  Current choices are "vector" to create a vector
-        /// based texture or "image" to create a texture from an image at a particular URL</param>
-        /// <param name="data">The data for the generator</param>
-        /// <param name="extraParams">Parameters for the generator that don't form part of the main data.</param>
-        /// <param name="SetBlending">
-        /// If true, the newly generated texture is blended with the appropriate existing ones on the prim
-        /// </param>
-        /// <param name="disp">
-        /// Display flags.  If DISP_EXPIRE then the old texture is deleted if it is replaced by a
-        /// newer generated texture (may not currently be implemented).  If DISP_TEMP then the asset is flagged as
-        /// temporary, which often means that it is not persisted to the database.
-        /// </param>
-        /// <param name="AlphaValue">
-        /// The alpha value of the generated texture.
-        /// </param>
-        /// <param name="face">
-        /// The face of the prim on which to put the generated texture.  If ALL_SIDES then all sides of the prim are
-        /// set
-        /// </param>
-        /// <returns>
-        /// The UUID of the texture updater, not the texture UUID.  If you need the texture UUID then you will need
-        /// to obtain it directly from the SceneObjectPart.  For instance, if ALL_SIDES is set then this texture
-        /// can be obtained as SceneObjectPart.Shape.Textures.DefaultTexture.TextureID
-        /// </returns>
+
         UUID AddDynamicTextureData(UUID simID, UUID primID, string contentType, string data, string extraParams,
                     bool SetBlending, int disp, byte AlphaValue, int face);
 
@@ -117,21 +70,12 @@ namespace OpenSim.Region.Framework.Interfaces
         string GetContentType();
         bool SupportsAsynchronous();
 
-//        /// <summary>
-//        /// Return true if converting the input body and extra params data will always result in the same byte[] array
-//        /// </summary>
-//        /// <remarks>
-//        /// This method allows the caller to use a previously generated asset if it has one.
-//        /// </remarks>
-//        /// <returns></returns>
-//        /// <param name='bodyData'></param>
-//        /// <param name='extraParams'></param>
-//        bool AlwaysIdenticalConversion(string bodyData, string extraParams);
-
         IDynamicTexture ConvertUrl(string url, string extraParams);
+        IDynamicTexture ConvertUUID(UUID textureUUID, string extraParams);
         IDynamicTexture ConvertData(string bodyData, string extraParams);
 
         bool AsyncConvertUrl(UUID id, string url, string extraParams);
+        bool AsyncConvertUUID(UUID id, UUID textureUUID, string extraParams);
         bool AsyncConvertData(UUID id, string bodyData, string extraParams);
 
         void GetDrawStringSize(string text, string fontName, int fontSize,
@@ -157,6 +101,14 @@ namespace OpenSim.Region.Framework.Interfaces
         Uri InputUri { get; }
 
         /// <summary>
+        /// UUID used to generate this data.
+        /// </summary>
+        /// <remarks>
+        /// Null if a UUID was not used.
+        /// </remarks>
+        UUID InputUUID { get; }
+
+        /// <summary>
         /// Extra input params used to generate this data.
         /// </summary>
         string InputParams { get; }
@@ -172,9 +124,10 @@ namespace OpenSim.Region.Framework.Interfaces
         Size Size { get; }
 
         /// <summary>
-        /// Signal whether the texture is reuseable (i.e. whether the same input data will always generate the same
+        /// Signal whether the texture is reusable (i.e. whether the same input data will always generate the same
         /// texture).
         /// </summary>
-        bool IsReuseable { get; }
+        bool IsReusable { get; }
+        bool IsReuseable { get; set; }
     }
 }
